@@ -37,7 +37,6 @@ func (que *messageQuery) SelectMessagesWithAdmin(userId int) ([]entity.Message, 
 		 FROM message
 		 WHERE (send_to = ? AND send_from in (select user_id from admin))
 		    OR (send_from = ? AND send_to in (select user_id from admin))
-		   AND  
 		 ORDER BY create_at`,
 		userId,
 		userId,

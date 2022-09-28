@@ -8,7 +8,7 @@ export const Header = (props: {
 
 
 	return (
-		<header className="navbar is-dark mb-3">
+		<header className="navbar is-dark">
 			<div className="navbar-brand">
 				<a className="navbar-item is-size-4" href="/">inquiry-chat</a>
 				<a onClick={() => {setIsActive(!isActive);}} 

@@ -19,7 +19,7 @@ func router() *gin.Engine {
 	r := gin.Default()
 	
 	//TEMPLATE
-	r.LoadHTMLGlob("web/template/*.html")
+	//r.LoadHTMLGlob("web/template/*.html")
 
 	//STATIC
 	r.Static("/css", "web/static/css")

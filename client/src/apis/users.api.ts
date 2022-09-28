@@ -92,3 +92,10 @@ export const authorized = () => {
 		return false
 	});
 }
+
+
+export const getUsers = () => {
+	return fetch(`${apiurl}/users`)
+	.then(responseFilter)
+	.catch(console.error);
+}
