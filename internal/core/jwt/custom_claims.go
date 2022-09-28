@@ -12,6 +12,7 @@ JwtPayload拡張
 type CustomClaims struct {
 	UserId int
 	UserName string
+	IsAdmin bool
 }
 
 
@@ -32,5 +33,15 @@ func GetUserName (c *gin.Context) string {
 		return ""
 	} else {
 		return pl.(JwtPayload).UserName
+	}
+}
+
+func GetIsAdmin (c *gin.Context) bool {
+	pl := c.Keys[CONTEXT_KEY_PAYLOAD]
+	if pl == nil {
+		log.Panic("Error: GetUserIsAdimin")
+		return false
+	} else {
+		return pl.(JwtPayload).IsAdmin
 	}
 }

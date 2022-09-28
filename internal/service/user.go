@@ -8,6 +8,7 @@ import (
 	"inquiry-chat/internal/core/logger"
 	"inquiry-chat/internal/model/entity"
 	"inquiry-chat/internal/model/repository"
+	"inquiry-chat/internal/model/query"
 )
 
 
@@ -20,17 +21,20 @@ type UserService interface {
 	ChangePassword(userId int, password string) int
 	DeleteUser(userId int) int
 	GetUsers() ([]entity.User, error)
+	GetAdmins() ([]entity.User, error)
 }
 
 
 type userService struct {
 	uRep repository.UserRepository
+	aQue query.AdminQuery
 }
 
 
 func NewUserService() UserService {
 	uRep := repository.NewUserRepository()
-	return &userService{uRep}
+	aQue := query.NewAdminQuery()
+	return &userService{uRep, aQue}
 }
 
 
@@ -104,6 +108,7 @@ func (serv *userService) GenerateJWT(userId int) string {
 	var cc jwt.CustomClaims
 	cc.UserId = user.UserId
 	cc.UserName = user.UserName
+	cc.IsAdmin = serv.aQue.IsAdmin(userId)
 	jwtStr, err := jwt.GenerateJWT(cc)
 
 	if err != nil {
@@ -186,6 +191,17 @@ func (serv *userService) DeleteUser(userId int) int {
 
 func (serv *userService) GetUsers() ([]entity.User, error) {
 	users, err := serv.uRep.SelectAll()
+
+	if err != nil {
+		logger.LogError(err.Error())
+	}
+
+	return users, err
+}
+
+
+func (serv *userService) GetAdmins() ([]entity.User, error) {
+	users, err := serv.aQue.SelectAdmins()
 
 	if err != nil {
 		logger.LogError(err.Error())

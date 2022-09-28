@@ -10,7 +10,7 @@ import (
 
 type AdminQuery interface {
 	IsAdmin(userId int) bool
-	Select() (entity.User, error)
+	SelectAdmins() ([]entity.User, error)
 }
 
 
@@ -42,19 +42,33 @@ func (que *adminQuery) IsAdmin(userId int) bool {
 }
 
 
-func (que *adminQuery) Select() (entity.User, error) {
-	var ret entity.User
+func (que *adminQuery) SelectAdmins() ([]entity.User, error) {
+	var ret []entity.User
 
-	err := que.db.QueryRow(
+	rows, err := que.db.Query(
 		`SELECT 
 			u.user_id, 
-			u.user_name,
+			u.user_name
 		 FROM users u, admin a 
 		 WHERE u.user_id = a.user_id`, 
-	).Scan(
-		&ret.UserId, 
-		&ret.UserName,
 	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	for rows.Next() {
+		u := entity.User{}
+
+		err = rows.Scan(
+			&u.UserId,
+			&u.UserName,
+		)
+		if err != nil {
+			break
+		}
+		ret = append(ret, u)
+	}
 
 	return ret, err
 }

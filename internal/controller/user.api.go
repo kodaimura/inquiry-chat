@@ -9,6 +9,7 @@ import (
 	"inquiry-chat/config"
 	"inquiry-chat/internal/core/jwt"
 	"inquiry-chat/internal/service"
+	"inquiry-chat/internal/model/entity"
 )
 
 
@@ -157,7 +158,13 @@ func (ctr *userApiController) logout(c *gin.Context) {
 
 //GET /api/users
 func (ctr *userApiController) getUsers(c *gin.Context) {
-    users, _ := ctr.uServ.GetUsers();
+	var users []entity.User
+
+	if jwt.GetIsAdmin(c) {
+		users, _ = ctr.uServ.GetUsers();
+	} else {
+		users, _ = ctr.uServ.GetAdmins();
+	}
 
     c.JSON(200, gin.H{
 		"users": users,
