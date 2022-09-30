@@ -99,3 +99,10 @@ export const getUsers = () => {
 	.then(responseFilter)
 	.catch(console.error);
 }
+
+
+export const getUser = (userId: number) => {
+	return fetch(`${apiurl}/users/${userId}`)
+	.then(responseFilter)
+	.catch(console.error);
+}

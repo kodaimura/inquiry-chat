@@ -22,17 +22,10 @@ func newMessageApiController() *messageApiController {
 }
 
 
-//GET /api/messages
+//GET /api/messages/@:user_id
 func (ctr *messageApiController) getMessages(c *gin.Context) {
-    messages, _ := ctr.mServ.GetMessagesWithAdmin(jwt.GetUserId(c))
-
-    c.JSON(200, messages)
-}
-
-//GET /api/messages/:user_id
-func (ctr *messageApiController) getMessages2(c *gin.Context) {
     userId, _ := strconv.Atoi(c.Param("user_id"))
-    messages, _ := ctr.mServ.GetMessagesWithAdmin(userId)
+    messages, _ := ctr.mServ.GetTalk(userId, jwt.GetUserId(c))
 
     c.JSON(200, messages)
 }

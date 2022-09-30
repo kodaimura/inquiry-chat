@@ -10,8 +10,7 @@ import (
 
 type MessageService interface {
     RegisterMessage(message string, from, to int) int
-    GetMessagesWithAdmin(userId int) ([]entity.Message, error)
-    GetMessagesWithAdminByName(username string) ([]entity.Message, error)
+    GetTalk(userId1, userId2 int) ([]entity.Message, error)
 }
 
 
@@ -52,27 +51,9 @@ func (serv *messageService) RegisterMessage(message string, from, to int) int {
 }
 
 
-func (serv *messageService) GetMessagesWithAdmin(userId int) ([]entity.Message, error) {
-    messages, err := serv.mQue.SelectMessagesWithAdmin(userId)
+func (serv *messageService) GetTalk(userId1, userId2 int) ([]entity.Message, error) {
+    messages, err := serv.mQue.SelectMessages(userId1, userId2)
 
-    if err != nil {
-        logger.LogError(err.Error())
-    }
-
-    return messages, err
-}
-
-
-func (serv *messageService) GetMessagesWithAdminByName(username string) ([]entity.Message, error) {
-    var messages []entity.Message
-
-    user, err := serv.uRep.SelectByName(username)
-    if err != nil {
-        logger.LogError(err.Error())
-        return messages, err
-    }
-
-    messages, err = serv.mQue.SelectMessagesWithAdmin(user.UserId)
     if err != nil {
         logger.LogError(err.Error())
     }

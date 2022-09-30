@@ -42,8 +42,7 @@ func SetRouter(r *gin.Engine) {
 
 			mac := newMessageApiController()
 
-			a.GET("/messages", mac.getMessages)
-        	a.GET("/messages/:user_id", mac.getMessages2)
+        	a.GET("/messages/@:user_id", mac.getMessages)
 		}
 	}
 

@@ -1,11 +1,14 @@
 import {useState,useEffect} from 'react';
 
 import {Header, SideBar} from '../layouts';
+import {Chat} from '../modules';
 import {getProfile, logout, getUsers} from '../../apis/users.api';
 import {getMessages} from '../../apis/messages.api';
 
 
 export const MyPage = () => {
+	const [toUserId, setToUserId] = useState(0);
+	const [userId, setUserId] = useState(0);
 	const [username, setUsername] = useState("");
 	const [users, setUsers] = useState([{user_id:0, user_name:""}]);
 
@@ -13,6 +16,7 @@ export const MyPage = () => {
 		getProfile()
 		.then(data => {
 			if (data && data.user_name) setUsername(data.user_name);
+			if (data && data.user_id) setUserId(data.user_id);
 		});
 
 		getUsers()
@@ -39,7 +43,7 @@ export const MyPage = () => {
 					<button 
 						className="button py-3 is-align-items-center is-fullwidth 
 						is-small is-justify-content-flex-start is-link"
-						onClick={() => getMessages(user.user_id).then(console.log)}
+						onClick={() => setToUserId(user.user_id)}
 					>
         			<span key={index}>{user.user_name}</span>
         			</button>
@@ -56,7 +60,7 @@ export const MyPage = () => {
 			}
 		/>
 		<div className="column">
-		<p>{username}さん</p>
+		<Chat userId={userId} username={username} toUserId={toUserId} />
 		</div>
 		</div>
 		</>

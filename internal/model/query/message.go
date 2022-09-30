@@ -9,7 +9,7 @@ import (
 
 
 type MessageQuery interface {
-	SelectMessagesWithAdmin(userId int) ([]entity.Message, error)
+	SelectMessages(userId1, userId2 int) ([]entity.Message, error)
 }
 
 
@@ -24,7 +24,7 @@ func NewMessageQuery() MessageQuery {
 }
 
 
-func (que *messageQuery) SelectMessagesWithAdmin(userId int) ([]entity.Message, error) {
+func (que *messageQuery) SelectMessages(userId1, userId2 int) ([]entity.Message, error) {
 	var ret []entity.Message
 
 	rows, err := que.db.Query(
@@ -35,11 +35,13 @@ func (que *messageQuery) SelectMessagesWithAdmin(userId int) ([]entity.Message, 
 			send_to,
 			create_at
 		 FROM message
-		 WHERE (send_to = ? AND send_from in (select user_id from admin))
-		    OR (send_from = ? AND send_to in (select user_id from admin))
+		 WHERE (send_to = ? AND send_from = ?)
+		    OR (send_from = ? AND send_to = ?)
 		 ORDER BY create_at`,
-		userId,
-		userId,
+		userId1,
+		userId2,
+		userId1,
+		userId2,
 	)
 
 	if err != nil {
