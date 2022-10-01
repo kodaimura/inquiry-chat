@@ -4,7 +4,6 @@ import (
     "strconv"
 
     "github.com/gin-gonic/gin"
-    //"github.com/gorilla/websocket"
     
     "inquiry-chat/internal/core/jwt"
     "inquiry-chat/internal/service"

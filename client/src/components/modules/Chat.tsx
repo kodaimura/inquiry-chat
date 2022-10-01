@@ -1,8 +1,11 @@
-import {useState,useEffect} from 'react';
+import {useState,useEffect,useRef} from 'react';
 
 import {Header, SideBar} from '../layouts';
 import {getProfile, logout, getUser} from '../../apis/users.api';
 import {getMessages} from '../../apis/messages.api';
+
+
+let socket: any;
 
 
 export const Chat = (props: {
@@ -14,6 +17,14 @@ export const Chat = (props: {
 	const [messages, setMessages] = useState([{
 		message:"", send_from:0, send_to:0, create_at:"",
 	}]);
+	const [msg, setMsg] = useState("");
+	const webSocketRef = useRef<WebSocket>();
+	let socket: WebSocket;
+
+  	const connectSocket = () => {
+		socket = new WebSocket(`ws://localhost:3000/api/messages/@${props.toUserId}/ws`);
+		webSocketRef.current = socket;
+    }
 
 	useEffect(() => {
 		if (props.toUserId != 0) {
@@ -33,8 +44,15 @@ export const Chat = (props: {
 				}
 			})
 
+			connectSocket()
 		}
 	}, [props.toUserId])
+
+	useEffect(() => {
+		webSocketRef.current?.addEventListener('message', (event: any) => {
+			setMessages([...messages, JSON.parse(event.data)])
+		});
+	}, [messages])
 
 	return (
 		<>
@@ -57,6 +75,21 @@ export const Chat = (props: {
         	</li>
      	))}
      	</ul>
+
+     	<div className="field">
+			<p className="control">
+			<input className="input" type="text"
+			onChange={(e) => setMsg(e.target.value)}/>
+			</p>
+		</div>
+		<div className="field">
+			<p className="control">
+			<button className="button is-success" 
+			onClick={(e) => webSocketRef.current?.send(msg)}>
+			送信
+			</button>
+			</p>
+		</div>
 		</>
 		)
 }
