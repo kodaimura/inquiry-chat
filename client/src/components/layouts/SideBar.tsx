@@ -9,28 +9,28 @@ export const SideBar = (props: {
 	const st1 = {
 		width: '320px',
 		height: '100vh',
+        position: 'absolute' as 'absolute',
+        zIndex: 1,
 	}
 
 	return (
 		<div>
 		<nav className="navbar is-link is-hidden-desktop">
-			<div className="navbar-brand is-align-items-center">
-			<a onClick={() => {setIsActive(!isActive);}} 
-				role="button" 
-				className={`navbar-burger ${isActive ? "is-active" : ""}`} 
-				aria-expanded="false">
+			<div className="navbar-brand">
+            <div 
+                onClick={() => {setIsActive(!isActive);}} 
+                className={`ml-0 burger navbar-burger ${isActive ? "is-active" : ""}`}
+            >
         	<span aria-hidden="true"></span>
         	<span aria-hidden="true"></span>
         	<span aria-hidden="true"></span>
-      		</a>
+            </div>
       		</div>
       	</nav>
-      	<div className={`navbar-menu ${isActive ? "is-active is-overlay" : ""}`}>
-      	<div style={st1} className="has-background-link">
-        <aside className="menu pt-5 mt-3">
-        {props.content}
-        </aside>
-        </div>
+      	<div className={`navbar-menu has-background-link ${isActive ? "is-active" : ""}`} style={st1}>
+            <div className="mt-5" style={st1}>
+            {props.content}
+            </div>
         </div>
         </div>
 	);

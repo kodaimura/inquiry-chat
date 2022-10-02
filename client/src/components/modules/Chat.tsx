@@ -27,7 +27,7 @@ export const Chat = (props: {
     }
 
 	useEffect(() => {
-		if (props.toUserId != 0) {
+		if (props.toUserId !== 0) {
 			getUser(props.toUserId)
 			.then(data => {
 				if (data && data.user_name) setToName(data.user_name);
@@ -54,8 +54,27 @@ export const Chat = (props: {
 		});
 	}, [messages])
 
+
+	const st1 = {
+		height: '90vh',
+		overflowY: 'scroll' as 'scroll',
+		paddingBottom: '200px'
+	}
+
+	const st2 = {
+		position: 'relative' as 'relative',
+		height: '90vh',
+	}
+
+	const st3 = {
+		position: 'absolute' as 'absolute',
+		bottom: 0,
+		width: '100%'
+	}
+
 	return (
-		<>
+		<div style={st2}>
+		<div className="ml-3 mt-3" style={st1}>
 		<ul>
 		{messages.map((
 			m:{
@@ -67,29 +86,28 @@ export const Chat = (props: {
 			index: number
 		) =>  (
 			<li>
-			<span>{(m.send_from == props.userId)? 
+			<span>{(m.send_from === props.userId)? 
 				props.username 
-				: (m.send_from == props.toUserId)? toName : ""}</span>
+				: (m.send_from === props.toUserId)? toName : ""}</span>
         	<span>{m.message}</span>
         	<span>{m.create_at}</span>
         	</li>
      	))}
      	</ul>
+     	</div>
 
-     	<div className="field">
-			<p className="control">
-			<input className="input" type="text"
-			onChange={(e) => setMsg(e.target.value)}/>
-			</p>
-		</div>
-		<div className="field">
-			<p className="control">
+     	<div className="box" style={st3}>
+			<textarea 
+				className="textarea"
+				rows={3}
+				onChange={(e) => setMsg(e.target.value)}
+			>
+			</textarea>
 			<button className="button is-success" 
 			onClick={(e) => webSocketRef.current?.send(msg)}>
 			送信
 			</button>
-			</p>
 		</div>
-		</>
+		</div>
 		)
 }

@@ -8,9 +8,9 @@ export const Header = (props: {
 
 
 	return (
-		<header className="navbar is-dark">
+		<header className="navbar is-dark mb-3">
 			<div className="navbar-brand">
-				<a className="navbar-item is-size-4" href="/">inquiry-chat</a>
+				<a className="navbar-item is-size-4" href="/">問い合わせ</a>
 				<a onClick={() => {setIsActive(!isActive);}} 
 					role="button"
 					className={`navbar-burger burger ${isActive ? "is-active" : ""}`}

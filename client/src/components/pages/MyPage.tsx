@@ -25,9 +25,20 @@ export const MyPage = () => {
 		})
 	}, [])
 
+	const st1 = {
+		position: 'relative' as 'relative',
+        zIndex: 0,
+	}
+
+	const st2 = {
+		width: '320px',
+		height: '100vh',
+	}
+
 	return (
 		<>
-		<div className="columns">
+		<div style={st1}>
+		<div className="columns is-gapless">
 		<SideBar 
 			content={
 				<>
@@ -41,7 +52,7 @@ export const MyPage = () => {
 				) =>  (
 					<li>
 					<button 
-						className="button py-3 is-align-items-center is-fullwidth 
+						className="button is-align-items-center is-fullwidth 
 						is-small is-justify-content-flex-start is-link"
 						onClick={() => setToUserId(user.user_id)}
 					>
@@ -59,8 +70,14 @@ export const MyPage = () => {
 				</>
 			}
 		/>
+		<div className="is-hidden-touch" style={st2}>
+		</div>
 		<div className="column">
-		<Chat userId={userId} username={username} toUserId={toUserId} />
+		<div className="is-hidden-mobile">
+			<header className="navbar is-link"/>
+		</div>
+			<Chat userId={userId} username={username} toUserId={toUserId} />
+		</div>
 		</div>
 		</div>
 		</>
