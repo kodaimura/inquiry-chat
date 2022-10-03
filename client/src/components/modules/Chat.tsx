@@ -56,14 +56,14 @@ export const Chat = (props: {
 
 
 	const st1 = {
-		height: '90vh',
+		height: '100%',
 		overflowY: 'scroll' as 'scroll',
-		paddingBottom: '200px'
 	}
 
 	const st2 = {
-		position: 'relative' as 'relative',
-		height: '90vh',
+		paddingTop: '50px',
+		//position: 'relative' as 'relative',
+		height: 'calc(100% - 140px)',
 	}
 
 	const st3 = {
@@ -99,7 +99,7 @@ export const Chat = (props: {
      	<div className="box" style={st3}>
 			<textarea 
 				className="textarea"
-				rows={3}
+				rows={1}
 				onChange={(e) => setMsg(e.target.value)}
 			>
 			</textarea>

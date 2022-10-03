@@ -28,17 +28,18 @@ export const MyPage = () => {
 	const st1 = {
 		position: 'relative' as 'relative',
         zIndex: 0,
+        height: '100%',
 	}
 
 	const st2 = {
 		width: '320px',
-		height: '100vh',
+		height: '100%',
 	}
 
 	return (
 		<>
 		<div style={st1}>
-		<div className="columns is-gapless">
+		<div className="columns is-gapless" style={{height:'100%'}}>
 		<SideBar 
 			content={
 				<>
@@ -72,10 +73,7 @@ export const MyPage = () => {
 		/>
 		<div className="is-hidden-touch" style={st2}>
 		</div>
-		<div className="column">
-		<div className="is-hidden-mobile">
-			<header className="navbar is-link"/>
-		</div>
+		<div className="column" style={{height:'100%'}}>
 			<Chat userId={userId} username={username} toUserId={toUserId} />
 		</div>
 		</div>

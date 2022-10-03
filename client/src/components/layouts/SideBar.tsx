@@ -8,16 +8,16 @@ export const SideBar = (props: {
 	
 	const st1 = {
 		width: '320px',
-		height: '100vh',
+		height: '100%',
         position: 'absolute' as 'absolute',
         zIndex: 1,
 	}
 
 	return (
-		<div>
-		<nav className="navbar is-link is-hidden-desktop">
+		<>
+		<nav className="navbar is-link is-fixed-top">
 			<div className="navbar-brand">
-            <div 
+            <div
                 onClick={() => {setIsActive(!isActive);}} 
                 className={`ml-0 burger navbar-burger ${isActive ? "is-active" : ""}`}
             >
@@ -28,10 +28,10 @@ export const SideBar = (props: {
       		</div>
       	</nav>
       	<div className={`navbar-menu has-background-link ${isActive ? "is-active" : ""}`} style={st1}>
-            <div className="mt-5" style={st1}>
+            <div className="mt-5 pt-5" style={st1}>
             {props.content}
             </div>
         </div>
-        </div>
+        </>
 	);
 }
