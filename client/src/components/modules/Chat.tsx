@@ -62,15 +62,9 @@ export const Chat = (props: {
 
 	const st2 = {
 		paddingTop: '50px',
-		//position: 'relative' as 'relative',
 		height: 'calc(100% - 140px)',
 	}
 
-	const st3 = {
-		position: 'absolute' as 'absolute',
-		bottom: 0,
-		width: '100%'
-	}
 
 	return (
 		<div style={st2}>
@@ -95,8 +89,7 @@ export const Chat = (props: {
      	))}
      	</ul>
      	</div>
-
-     	<div className="box" style={st3}>
+		<div className="box">
 			<textarea 
 				className="textarea"
 				rows={1}
