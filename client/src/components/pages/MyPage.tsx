@@ -11,6 +11,9 @@ export const MyPage = () => {
 	const [userId, setUserId] = useState(0);
 	const [username, setUsername] = useState("");
 	const [users, setUsers] = useState([{user_id:0, user_name:""}]);
+	const [socket, setSocket] = useState<undefined|WebSocket>(undefined);
+	
+	//let socket: WebSocket | undefined = undefined;
 
 	useEffect(() => {
 		getProfile()
@@ -23,6 +26,10 @@ export const MyPage = () => {
 		.then(data => {
 			if (data && data.users) setUsers(data.users);
 		})
+
+		if (socket == undefined) {
+			setSocket(new WebSocket(`ws://localhost:3000/api/messages/ws`));
+		}
 	}, [])
 
 	const st1 = {
@@ -74,7 +81,12 @@ export const MyPage = () => {
 		<div className="is-hidden-touch" style={st2}>
 		</div>
 		<div className="column" style={{height:'100%'}}>
-			<Chat userId={userId} username={username} toUserId={toUserId} />
+			<Chat 
+				userId={userId} 
+				username={username} 
+				toUserId={toUserId} 
+				socket={socket}
+			/>
 		</div>
 		</div>
 		</div>

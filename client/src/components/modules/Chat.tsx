@@ -9,25 +9,19 @@ import {getMessages} from '../../apis/messages.api';
 const initMsgs = [{
 	message:"", send_from:0, create_at:"",
 }];
-let socket: any;
 
 
 export const Chat = (props: {
 	userId: number,
 	username: string,
 	toUserId: number,
+	socket: WebSocket | undefined,
 }) => {
 	const [toUsername, setToUsername] = useState("");
 	const [messages, setMessages] = useState(initMsgs);
 	const [newMessages, setNewMessages] = useState(initMsgs);
 	const [msg, setMsg] = useState("");
 	const webSocketRef = useRef<WebSocket>();
-	let socket: WebSocket;
-
-  	const connectSocket = () => {
-		socket = new WebSocket(`ws://localhost:3000/api/messages/@${props.toUserId}/ws`);
-		webSocketRef.current = socket;
-    }
 
 
 	useEffect(() => {
@@ -45,14 +39,13 @@ export const Chat = (props: {
 					setMessages(initMsgs);
 				}
 			})
-
-			connectSocket()
 		}
-	}, [props.toUserId])
+		webSocketRef.current = props.socket;
+
+	}, [props.toUserId, props.socket])
 
 
 	useEffect(() => {
-		console.log(111111)
 		webSocketRef.current?.addEventListener('message', (event: any) => {
 			console.log(newMessages)
 			setNewMessages([...newMessages, JSON.parse(event.data)])
@@ -96,7 +89,11 @@ export const Chat = (props: {
 			>
 			</textarea>
 			<button className="button is-success" 
-			onClick={(e) => webSocketRef.current?.send(msg)}>
+			onClick={(e) => {
+				webSocketRef.current?.send(
+					JSON.stringify({"to": props.toUserId, "message":msg})
+				)}
+			}>
 			送信
 			</button>
 		</div>

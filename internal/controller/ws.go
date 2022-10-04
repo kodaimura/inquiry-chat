@@ -2,7 +2,6 @@ package controller
 
 import (
     "time"
-    "strconv"
     "encoding/json"
     "net/http"
 
@@ -29,8 +28,12 @@ func newWsController() *wsController {
 
 type Socket struct {
     UserId int
-    ToId int
     Conn *websocket.Conn
+}
+
+type Msg struct {
+    To int `json: to`
+    Message string `json: message`
 }
 
 
@@ -48,7 +51,7 @@ var upgrader = websocket.Upgrader{
 }
 
 
-//GET /api/messages/@:user_id/ws
+//GET /api/messages/ws
 func (ctr *wsController) wsHandshake(c *gin.Context) {
     w := c.Writer
     r := c.Request
@@ -60,15 +63,8 @@ func (ctr *wsController) wsHandshake(c *gin.Context) {
     }
     defer conn.Close()
 
-    to, err := strconv.Atoi(c.Param("user_id"))
-    if err != nil {
-        logger.LogError(err.Error())
-        return
-    }
-
     var s Socket
     s.UserId = jwt.GetUserId(c)
-    s.ToId = to
     s.Conn = conn
 
     sockets = append(sockets, s)
@@ -77,41 +73,46 @@ func (ctr *wsController) wsHandshake(c *gin.Context) {
 }
 
 
-func (ctr *wsController) wsListener(s Socket) {
+func (ctr *wsController) wsListener(soc Socket) {
     for {
-        _, _message, err := s.Conn.ReadMessage()
-        message := string(_message)
-
+        _, jsonStr, err := soc.Conn.ReadMessage()
         if err != nil {
-            ctr.removeSocket(s.Conn)
+            ctr.removeSocket(soc.Conn)
             logger.LogError(err.Error())
             return
         }
 
-        result := ctr.mServ.RegisterMessage(message, s.UserId, s.ToId)
+        var msg Msg
+        err = json.Unmarshal([]byte(jsonStr), &msg);
+        if err != nil {
+            ctr.removeSocket(soc.Conn)
+            logger.LogError(err.Error())
+            return
+        }
+
+        result := ctr.mServ.RegisterMessage(msg.Message, soc.UserId, msg.To)
         if result != service.REGISTER_MESSAGE_SUCCESS_INT {
-            ctr.removeSocket(s.Conn)
+            ctr.removeSocket(soc.Conn)
             return
         }
 
         var m entity.Message
-        m.Message = message
-        m.SendFrom = s.UserId
-        m.SendTo = s.ToId
+        m.Message = msg.Message
+        m.SendFrom = soc.UserId
         m.CreateAt = time.Now().Format("2006-01-02 15:04:05")
-        msg, _ := json.Marshal(m)
+        
 
-        for _, soc := range sockets {
-            if (soc.UserId == s.UserId && soc.ToId == s.ToId) || 
-            (soc.ToId == s.UserId && soc.UserId == s.ToId) {
-                ctr.sendMessage(msg, s.Conn)
+        for _, s := range sockets {
+            if s.UserId == soc.UserId || s.UserId == msg.To {
+                ctr.sendMessage(m, soc.Conn)
             }
         }
     }
 }
 
 
-func (ctr *wsController) sendMessage(msg []byte, conn *websocket.Conn) {
+func (ctr *wsController) sendMessage(message entity.Message, conn *websocket.Conn) {
+    msg, _ := json.Marshal(message)
     err := conn.WriteMessage(websocket.TextMessage, msg)
     if err != nil {
         ctr.removeSocket(conn)

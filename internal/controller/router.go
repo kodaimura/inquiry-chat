@@ -45,8 +45,8 @@ func SetRouter(r *gin.Engine) {
         	a.GET("/messages/@:user_id", mac.getMessages)
 
         	wsc := newWsController()
-        	
-        	a.GET("/messages/@:user_id/ws", wsc.wsHandshake)
+
+        	a.GET("/messages/ws", wsc.wsHandshake)
 		}
 	}
 
