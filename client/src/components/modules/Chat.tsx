@@ -1,11 +1,14 @@
 import {useState,useEffect,useRef} from 'react';
 
 import {Header, SideBar} from '../layouts';
-import {Message} from './Message';
+import {Messages} from './Messages';
 import {getProfile, logout, getUser} from '../../apis/users.api';
 import {getMessages} from '../../apis/messages.api';
 
 
+const initMsgs = [{
+	message:"", send_from:0, create_at:"",
+}];
 let socket: any;
 
 
@@ -14,10 +17,9 @@ export const Chat = (props: {
 	username: string,
 	toUserId: number,
 }) => {
-	const [toName, setToName] = useState("");
-	const [messages, setMessages] = useState([{
-		message:"", send_from:0, send_to:0, create_at:"",
-	}]);
+	const [toUsername, setToUsername] = useState("");
+	const [messages, setMessages] = useState(initMsgs);
+	const [newMessages, setNewMessages] = useState(initMsgs);
 	const [msg, setMsg] = useState("");
 	const webSocketRef = useRef<WebSocket>();
 	let socket: WebSocket;
@@ -27,21 +29,20 @@ export const Chat = (props: {
 		webSocketRef.current = socket;
     }
 
+
 	useEffect(() => {
 		if (props.toUserId !== 0) {
 			getUser(props.toUserId)
 			.then(data => {
-				if (data && data.user_name) setToName(data.user_name);
+				if (data && data.user_name) setToUsername(data.user_name);
 			});
 
 			getMessages(props.toUserId)
 			.then(data => {
 				if (data) {
-					setMessages(data)
+					setMessages(data);
 				} else {
-					setMessages([{
-						message:"", send_from:0, send_to:0, create_at:"",
-					}])
+					setMessages(initMsgs);
 				}
 			})
 
@@ -49,48 +50,43 @@ export const Chat = (props: {
 		}
 	}, [props.toUserId])
 
+
 	useEffect(() => {
+		console.log(111111)
 		webSocketRef.current?.addEventListener('message', (event: any) => {
-			setMessages([...messages, JSON.parse(event.data)])
+			console.log(newMessages)
+			setNewMessages([...newMessages, JSON.parse(event.data)])
 		});
-	}, [messages])
+	}, [newMessages])
 
 
 	const st1 = {
-		height: '100%',
-		overflowY: 'scroll' as 'scroll',
-	}
-
-	const st2 = {
 		paddingTop: '50px',
 		height: 'calc(100% - 140px)',
 	}
 
+	const st2 = {
+		height: '100%',
+		overflowY: 'scroll' as 'scroll',
+	}
 
 	return (
-		<div style={st2}>
-		<div className="ml-3 mt-3" style={st1}>
-		<ul>
-		{messages.map((
-			m:{
-				message: string,
-				send_from: number,
-				send_to: number,
-				create_at: string,
-			},
-			index: number
-		) =>  (
-			<li>
-			<Message 
-				username={
-					(m.send_from === props.userId)? props.username 
-					: (m.send_from === props.toUserId)? toName : ""}
-				message={m.message} 
-				create_at={m.create_at}
-			/>
-        	</li>
-     	))}
-     	</ul>
+		<div style={st1}>
+		<div className="ml-3 mt-3" style={st2}>
+		<Messages
+			userId={props.userId}
+			username={props.username}
+			toUserId={props.toUserId}
+			toUsername={toUsername}
+			messages={messages}
+		/>
+		<Messages
+			userId={props.userId}
+			username={props.username}
+			toUserId={props.toUserId}
+			toUsername={toUsername}
+			messages={newMessages}
+		/>
      	</div>
 		<div className="box">
 			<textarea 
