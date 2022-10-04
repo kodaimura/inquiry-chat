@@ -1,6 +1,7 @@
 import {useState,useEffect,useRef} from 'react';
 
 import {Header, SideBar} from '../layouts';
+import {Message} from './Message';
 import {getProfile, logout, getUser} from '../../apis/users.api';
 import {getMessages} from '../../apis/messages.api';
 
@@ -80,11 +81,13 @@ export const Chat = (props: {
 			index: number
 		) =>  (
 			<li>
-			<span>{(m.send_from === props.userId)? 
-				props.username 
-				: (m.send_from === props.toUserId)? toName : ""}</span>
-        	<span>{m.message}</span>
-        	<span>{m.create_at}</span>
+			<Message 
+				username={
+					(m.send_from === props.userId)? props.username 
+					: (m.send_from === props.toUserId)? toName : ""}
+				message={m.message} 
+				create_at={m.create_at}
+			/>
         	</li>
      	))}
      	</ul>
