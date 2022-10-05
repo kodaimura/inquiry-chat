@@ -6,14 +6,14 @@ import {getProfile, logout, getUsers} from '../../apis/users.api';
 import {getMessages} from '../../apis/messages.api';
 
 
+const socket = new WebSocket(`ws://localhost:3000/api/messages/ws`)
+
 export const MyPage = () => {
 	const [toUserId, setToUserId] = useState(0);
 	const [userId, setUserId] = useState(0);
 	const [username, setUsername] = useState("");
 	const [users, setUsers] = useState([{user_id:0, user_name:""}]);
-	const [socket, setSocket] = useState<undefined|WebSocket>(undefined);
-	
-	//let socket: WebSocket | undefined = undefined;
+
 
 	useEffect(() => {
 		getProfile()
@@ -26,10 +26,6 @@ export const MyPage = () => {
 		.then(data => {
 			if (data && data.users) setUsers(data.users);
 		})
-
-		if (socket == undefined) {
-			setSocket(new WebSocket(`ws://localhost:3000/api/messages/ws`));
-		}
 	}, [])
 
 	const st1 = {

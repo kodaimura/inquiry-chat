@@ -25,6 +25,12 @@ export const Chat = (props: {
 
 
 	useEffect(() => {
+		const ls = document.getElementById('messages')
+		ls!.scrollTo(0, ls!.scrollHeight);
+	})
+
+
+	useEffect(() => {
 		if (props.toUserId !== 0) {
 			getUser(props.toUserId)
 			.then(data => {
@@ -39,6 +45,8 @@ export const Chat = (props: {
 					setMessages(initMsgs);
 				}
 			})
+
+			setNewMessages(initMsgs)
 		}
 		webSocketRef.current = props.socket;
 
@@ -47,10 +55,9 @@ export const Chat = (props: {
 
 	useEffect(() => {
 		webSocketRef.current?.addEventListener('message', (event: any) => {
-			console.log(newMessages)
 			setNewMessages([...newMessages, JSON.parse(event.data)])
-		});
-	}, [newMessages])
+		},{once: true});
+	}, [newMessages, webSocketRef.current])
 
 
 	const st1 = {
@@ -65,7 +72,7 @@ export const Chat = (props: {
 
 	return (
 		<div style={st1}>
-		<div className="ml-3 mt-3" style={st2}>
+		<div className="ml-3 mt-3" id="messages" style={st2}>
 		<Messages
 			userId={props.userId}
 			username={props.username}

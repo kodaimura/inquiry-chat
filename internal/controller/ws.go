@@ -68,7 +68,6 @@ func (ctr *wsController) wsHandshake(c *gin.Context) {
     s.Conn = conn
 
     sockets = append(sockets, s)
-
     ctr.wsListener(s)
 }
 
@@ -101,7 +100,6 @@ func (ctr *wsController) wsListener(soc Socket) {
         m.SendFrom = soc.UserId
         m.CreateAt = time.Now().Format("2006-01-02 15:04:05")
         
-
         for _, s := range sockets {
             if s.UserId == soc.UserId || s.UserId == msg.To {
                 ctr.sendMessage(m, soc.Conn)
