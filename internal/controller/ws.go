@@ -102,7 +102,7 @@ func (ctr *wsController) wsListener(soc Socket) {
         
         for _, s := range sockets {
             if s.UserId == soc.UserId || s.UserId == msg.To {
-                ctr.sendMessage(m, soc.Conn)
+                ctr.sendMessage(m, s.Conn)
             }
         }
     }
