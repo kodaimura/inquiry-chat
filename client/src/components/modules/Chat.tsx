@@ -1,6 +1,5 @@
 import {useState,useEffect,useRef} from 'react';
 
-import {Header, SideBar} from '../layouts';
 import {Messages} from './Messages';
 import {getProfile, logout, getUser} from '../../apis/users.api';
 import {getMessages} from '../../apis/messages.api';
