@@ -54,6 +54,7 @@ export const SideBar = (props: {
 						is-small is-justify-content-flex-start is-link"
 						onClick={() => {
 							props.setToUserId(user.user_id);
+							setIsActive(false);
 						}}
 					>
         			<span key={index}>{user.user_name}</span>
