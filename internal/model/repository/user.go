@@ -19,6 +19,7 @@ type UserRepository interface {
 	SelectByName(name string) (entity.User, error)
 	UpdatePassword(id int, password string) error
 	UpdateName(id int, name string) error
+	UpdateNickname(id int, name string) error
 }
 
 
@@ -40,6 +41,7 @@ func (rep *userRepository) SelectAll() ([]entity.User, error) {
 		`SELECT 
 			user_id, 
 			user_name, 
+			nickname,
 			create_at, 
 			update_at 
 		 FROM users`,
@@ -54,6 +56,7 @@ func (rep *userRepository) SelectAll() ([]entity.User, error) {
 		err = rows.Scan(
 			&u.UserId, 
 			&u.UserName,
+			&u.Nickname,
 			&u.CreateAt, 
 			&u.UpdateAt,
 		)
@@ -74,6 +77,7 @@ func (rep *userRepository) Select(id int) (entity.User, error){
 		`SELECT 
 			user_id, 
 			user_name, 
+			nickname,
 			create_at, 
 			update_at 
 		 FROM users 
@@ -82,6 +86,7 @@ func (rep *userRepository) Select(id int) (entity.User, error){
 	).Scan(
 		&ret.UserId, 
 		&ret.UserName, 
+		&ret.Nickname,
 		&ret.CreateAt, 
 		&ret.UpdateAt,
 	)
@@ -94,9 +99,11 @@ func (rep *userRepository) Insert(u *entity.User) error {
 	_, err := rep.db.Exec(
 		`INSERT INTO users (
 			user_name, 
+			nickname,
 			password
-		 ) VALUES(?,?)`,
+		 ) VALUES(?,?,?)`,
 		u.UserName, 
+		u.Nickname,
 		u.Password,
 	)
 	return err
@@ -107,9 +114,11 @@ func (rep *userRepository) Update(id int, u *entity.User) error {
 	_, err := rep.db.Exec(
 		`UPDATE users 
 		 SET user_name = ? 
-			  password = ?
+		 	 nickname = ?
+			 password = ?
 		 WHERE user_id = ?`,
 		u.UserName,
+		u.Nickname,
 		u.Password, 
 		id,
 	)
@@ -151,6 +160,18 @@ func (rep *userRepository) UpdateName(id int, name string) error {
 }
 
 
+func (rep *userRepository) UpdateNickname(id int, name string) error {
+	_, err := rep.db.Exec(
+		`UPDATE users
+		 SET nickname = ? 
+		 WHERE user_id = ?`, 
+		name, 
+		id,
+	)
+	return err
+}
+
+
 func (rep *userRepository) SelectByName(name string) (entity.User, error) {
 	var ret entity.User
 
@@ -158,6 +179,7 @@ func (rep *userRepository) SelectByName(name string) (entity.User, error) {
 		`SELECT 
 			user_id, 
 			user_name, 
+			nickname, 
 			password, 
 			create_at, 
 			update_at 
@@ -167,6 +189,7 @@ func (rep *userRepository) SelectByName(name string) (entity.User, error) {
 	).Scan(
 		&ret.UserId, 
 		&ret.UserName, 
+		&ret.Nickname,
 		&ret.Password, 
 		&ret.CreateAt, 
 		&ret.UpdateAt,

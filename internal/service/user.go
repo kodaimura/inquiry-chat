@@ -18,6 +18,7 @@ type UserService interface {
 	GenerateJWT(userId int) string
 	GetProfile(userId int) (entity.User, error)
 	ChangeUsername(userId int, username string) int
+	ChangeNickname(userId int, nickname string) int
 	ChangePassword(userId int, password string) int
 	DeleteUser(userId int) int
 	GetUsers() ([]entity.User, error)
@@ -61,6 +62,7 @@ func (serv *userService) Signup(username, password string) int {
 
 	var user entity.User
 	user.UserName = username
+	user.Nickname = username
 	user.Password = string(hashed)
 
 	err = serv.uRep.Insert(&user)
@@ -108,6 +110,7 @@ func (serv *userService) GenerateJWT(userId int) string {
 	var cc jwt.CustomClaims
 	cc.UserId = user.UserId
 	cc.UserName = user.UserName
+	cc.Nickname = user.Nickname
 	cc.IsAdmin = serv.aQue.IsAdmin(userId)
 	jwtStr, err := jwt.GenerateJWT(cc)
 
@@ -145,6 +148,23 @@ func (serv *userService) ChangeUsername(userId int, username string) int {
 	}
 
 	return CHANGE_USERNAME_SUCCESS_INT
+}
+
+
+// ChangeNickname() Return value
+/*----------------------------------------*/
+const CHANGE_NICKNAME_SUCCESS_INT = 0
+const CHANGE_NICKNAME_FAILURE_INT = 1
+/*----------------------------------------*/
+func (serv *userService) ChangeNickname(userId int, nickname string) int {
+	err := serv.uRep.UpdateNickname(userId, nickname)
+
+	if err != nil {
+		logger.LogError(err.Error())
+		return CHANGE_NICKNAME_FAILURE_INT
+	}
+
+	return CHANGE_NICKNAME_SUCCESS_INT
 }
 
 

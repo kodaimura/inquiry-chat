@@ -74,6 +74,24 @@ func (ctr *userApiController) changeUsername(c *gin.Context) {
 }
 
 
+//PUT[POST] /api/nickname
+func (ctr *userApiController) changeNickname(c *gin.Context) {
+	userId := jwt.GetUserId(c)
+
+	m := map[string]string{}
+	c.BindJSON(&m)
+	name := m["nickname"]
+
+	if ctr.uServ.ChangeNickname(userId, name) != service.CHANGE_NICKNAME_SUCCESS_INT {
+		c.JSON(500, gin.H{"error": "登録に失敗しました。"})
+		c.Abort()
+		return
+	}
+
+	c.JSON(200, gin.H{})
+}
+
+
 //DELETE /api/account
 func (ctr *userApiController) deleteUser(c *gin.Context) {
 	userId := jwt.GetUserId(c)

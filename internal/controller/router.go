@@ -33,6 +33,8 @@ func SetRouter(r *gin.Engine) {
 			a.GET("/profile", uac.getProfile)
 			a.PUT("/username", uac.changeUsername)
 			a.POST("/username", uac.changeUsername)
+			a.PUT("/nickname", uac.changeNickname)
+			a.POST("/nickname", uac.changeNickname)
 			a.PUT("/password", uac.changePassword)
 			a.POST("/password", uac.changePassword)
 			a.DELETE("/account", uac.deleteUser)
