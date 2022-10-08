@@ -106,3 +106,18 @@ export const getUser = (userId: number) => {
 	.then(responseFilter)
 	.catch(console.error);
 }
+
+
+export const updateProfile = (
+	nickname: string,
+) => {
+	fetch(`${apiurl}/nickname`, {
+		method: "PUT",
+		headers: {"Content-Type": "application/json"},
+		body: JSON.stringify({"nickname":nickname})
+	})
+	.then(response => {
+		document.location.href = "/";
+	})
+	.catch(console.error);
+}

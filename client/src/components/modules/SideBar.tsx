@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from 'react';
 
+import {ProfileModal} from './ProfileModal';
 import {logout, getUsers} from '../../apis/users.api';
 
 
 export const SideBar = (props: {
     setToUserId: (id: number) => void 
 }) => {
-	const [users, setUsers] = useState([{user_id:0, user_name:""}]);
+	const [users, setUsers] = useState([{user_id:0, nickname:""}]);
 	const [isActive, setIsActive] = useState(false);
 	
 	const st1 = {
@@ -36,6 +37,7 @@ export const SideBar = (props: {
         	<span aria-hidden="true"></span>
         	<span aria-hidden="true"></span>
             </div>
+            <ProfileModal />
       		</div>
       	</nav>
       	<div className={`navbar-menu has-background-link ${isActive ? "is-active" : ""}`} style={st1}>
@@ -44,7 +46,7 @@ export const SideBar = (props: {
 				{users.map((
 					user:{
 						user_id: number,
-						user_name: string,
+						nickname: string,
 					},
 					index: number
 				) =>  (
@@ -57,7 +59,7 @@ export const SideBar = (props: {
 							setIsActive(false);
 						}}
 					>
-        			<span key={index}>{user.user_name}</span>
+        			<span key={index}>{user.nickname}</span>
         			</button>
         			</li>
      			))}
