@@ -19,12 +19,8 @@ export const ProfileModal = () => {
 
 	return (
 		<>
-		<div className="navbar-item">
-			<button 
-				className="button is-primary is-small"
-				onClick={() => setIsActive(true)}>設定
-			</button>
-		</div>
+		<i className="fa-solid fa-gear fa-xl"
+			onClick={() => setIsActive(true)}></i>
 
 		<div className={`modal ${isActive ? "is-active" : ""}`}>
 		<div className="modal-background"></div>

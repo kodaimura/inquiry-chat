@@ -60,8 +60,7 @@ export const Chat = (props: {
 
 
 	const st1 = {
-		paddingTop: '50px',
-		height: 'calc(100% - 140px)',
+		height: 'calc(100% - 160px)',
 	}
 
 	const st2 = {
@@ -71,7 +70,7 @@ export const Chat = (props: {
 
 	return (
 		<div style={st1}>
-		<div className="ml-3 mt-3" id="messages" style={st2}>
+		<div id="messages" style={st2}>
 		<Messages
 			userId={props.userId}
 			userNickname={props.userNickname}
@@ -94,14 +93,16 @@ export const Chat = (props: {
 				onChange={(e) => setMsg(e.target.value)}
 			>
 			</textarea>
-			<button className="button is-success" 
-			onClick={(e) => {
-				webSocketRef.current?.send(
-					JSON.stringify({"to": props.toUserId, "message":msg})
-				)}
-			}>
-			送信
-			</button>
+			<div className="is-fullwidth has-text-right">
+			<i className="fa-solid fa-paper-plane fa-xl has-text-link" 
+				onClick={(e) => {
+					webSocketRef.current?.send(
+						JSON.stringify({"to": props.toUserId, "message":msg})
+				)}}
+				style={{bottom:0}}
+			>
+			</i>
+			</div>
 		</div>
 		</div>
 		)

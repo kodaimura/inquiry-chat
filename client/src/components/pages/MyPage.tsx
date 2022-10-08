@@ -30,8 +30,13 @@ export const MyPage = () => {
 	}
 
 	const st2 = {
-		width: '320px',
+		width: '280px',
 		height: '100%',
+	}
+
+	const st3 = {
+		height:'100%',
+		marginTop: '52px',
 	}
 
 	return (
@@ -41,7 +46,7 @@ export const MyPage = () => {
 		<SideBar setToUserId={setToUserId}/>
 		<div className="is-hidden-touch" style={st2}>
 		</div>
-		<div className="column" style={{height:'100%'}}>
+		<div className="column mx-3" style={st3}>
 			<Chat 
 				userId={userId} 
 				userNickname={userNickname} 

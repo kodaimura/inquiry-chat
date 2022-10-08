@@ -8,13 +8,24 @@ export const SideBar = (props: {
     setToUserId: (id: number) => void 
 }) => {
 	const [users, setUsers] = useState([{user_id:0, nickname:""}]);
+	const [toUserNickname, setToUserNickname] = useState("");
 	const [isActive, setIsActive] = useState(false);
 	
 	const st1 = {
-		width: '320px',
+		width: '280px',
 		height: '100%',
         position: 'absolute' as 'absolute',
         zIndex: 1,
+	}
+
+	const st2 = {
+		width: '280px',
+		height: '70px',
+	}
+
+	const st3 = {
+		height: 'calc(100% - 140px)',
+		overflowY: 'scroll' as 'scroll',
 	}
 
 	useEffect(() => {
@@ -27,7 +38,7 @@ export const SideBar = (props: {
 
 	return (
 		<>
-		<nav className="navbar is-link is-fixed-top">
+		<nav className="navbar has-background-info is-fixed-top">
 			<div className="navbar-brand">
             <div
                 onClick={() => {setIsActive(!isActive);}} 
@@ -37,12 +48,20 @@ export const SideBar = (props: {
         	<span aria-hidden="true"></span>
         	<span aria-hidden="true"></span>
             </div>
-            <ProfileModal />
+
+            <div className="navbar-item">
+            	<ProfileModal />
+            </div>
+            
+            <div className="navbar-item is-size-5 has-text-weight-semibold">
+            	@ {toUserNickname}
+            </div>
       		</div>
       	</nav>
-      	<div className={`navbar-menu has-background-link ${isActive ? "is-active" : ""}`} style={st1}>
-            <div className="mt-5 pt-5" style={st1}>
-				<ul className="menu-list px-5 is-size-6">
+      	<div className={`navbar-menu has-background-info ${isActive ? "is-active" : ""}`} style={st1}>
+            <div style={st1}>
+            <div className="is-hidden-mobile" style={st2}></div>
+				<ul className="menu-list px-4" style={st3}>
 				{users.map((
 					user:{
 						user_id: number,
@@ -52,10 +71,11 @@ export const SideBar = (props: {
 				) =>  (
 					<li>
 					<button 
-						className="button is-align-items-center is-fullwidth 
-						is-small is-justify-content-flex-start is-link"
+						className="button is-fullwidth 
+						is-justify-content-flex-start has-background-info"
 						onClick={() => {
 							props.setToUserId(user.user_id);
+							setToUserNickname(user.nickname);
 							setIsActive(false);
 						}}
 					>
@@ -63,13 +83,13 @@ export const SideBar = (props: {
         			</button>
         			</li>
      			))}
-
-				<button
-					className="button"
-					onClick={() => logout()}
-				>LOGOUT
-				</button>
 				</ul>
+				<div className="px-4">
+				<button
+					className="button is-fullwidth is-link is-light"
+					onClick={() => logout()}
+				>ログアウト</button>
+				</div>
             </div>
         </div>
         </>
