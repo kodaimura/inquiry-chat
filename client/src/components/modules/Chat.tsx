@@ -12,11 +12,11 @@ const initMsgs = [{
 
 export const Chat = (props: {
 	userId: number,
-	username: string,
+	userNickname: string,
 	toUserId: number,
 	socket: WebSocket | undefined,
 }) => {
-	const [toUsername, setToUsername] = useState("");
+	const [toUserNickname, setToUserNickname] = useState("");
 	const [messages, setMessages] = useState(initMsgs);
 	const [newMessages, setNewMessages] = useState(initMsgs);
 	const [msg, setMsg] = useState("");
@@ -33,7 +33,7 @@ export const Chat = (props: {
 		if (props.toUserId !== 0) {
 			getUser(props.toUserId)
 			.then(data => {
-				if (data && data.user_name) setToUsername(data.user_name);
+				if (data && data.nickname) setToUserNickname(data.nickname);
 			});
 
 			getMessages(props.toUserId)
@@ -74,16 +74,16 @@ export const Chat = (props: {
 		<div className="ml-3 mt-3" id="messages" style={st2}>
 		<Messages
 			userId={props.userId}
-			username={props.username}
+			userNickname={props.userNickname}
 			toUserId={props.toUserId}
-			toUsername={toUsername}
+			toUserNickname={toUserNickname}
 			messages={messages}
 		/>
 		<Messages
 			userId={props.userId}
-			username={props.username}
+			userNickname={props.userNickname}
 			toUserId={props.toUserId}
-			toUsername={toUsername}
+			toUserNickname={toUserNickname}
 			messages={newMessages}
 		/>
      	</div>

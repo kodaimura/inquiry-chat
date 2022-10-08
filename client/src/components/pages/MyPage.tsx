@@ -11,13 +11,13 @@ const socket = new WebSocket(`ws://localhost:3000/api/messages/ws`)
 export const MyPage = () => {
 	const [toUserId, setToUserId] = useState(0);
 	const [userId, setUserId] = useState(0);
-	const [username, setUsername] = useState("");
+	const [userNickname, setUserNickname] = useState("");
 
 
 	useEffect(() => {
 		getProfile()
 		.then(data => {
-			if (data && data.user_name) setUsername(data.user_name);
+			if (data && data.nickname) setUserNickname(data.nickname);
 			if (data && data.user_id) setUserId(data.user_id);
 		});
 
@@ -44,7 +44,7 @@ export const MyPage = () => {
 		<div className="column" style={{height:'100%'}}>
 			<Chat 
 				userId={userId} 
-				username={username} 
+				userNickname={userNickname} 
 				toUserId={toUserId} 
 				socket={socket}
 			/>

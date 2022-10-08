@@ -3,9 +3,9 @@ import {Message} from './Message';
 
 export const Messages = (props: {
 	userId: number,
-	username: string,
+	userNickname: string,
 	toUserId: number,
-	toUsername: string,
+	toUserNickname: string,
 	messages: {message:string, send_from:number, create_at:string}[],
 }) => {
 
@@ -23,12 +23,12 @@ export const Messages = (props: {
 			<li>
 			{(m.send_from === props.userId)?
 				<Message 
-					username={props.username}
+					userNickname={props.userNickname}
 					message={m.message} 
 					create_at={m.create_at}
 				/> : (m.send_from === props.toUserId)?
 				<Message 
-					username={props.toUsername}
+					userNickname={props.toUserNickname}
 					message={m.message} 
 					create_at={m.create_at}
 				/> : ""
