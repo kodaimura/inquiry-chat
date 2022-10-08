@@ -48,7 +48,8 @@ func (que *adminQuery) SelectAdmins() ([]entity.User, error) {
 	rows, err := que.db.Query(
 		`SELECT 
 			u.user_id, 
-			u.user_name
+			u.user_name,
+			u.nickname
 		 FROM users u, admin a 
 		 WHERE u.user_id = a.user_id`, 
 	)
@@ -63,6 +64,7 @@ func (que *adminQuery) SelectAdmins() ([]entity.User, error) {
 		err = rows.Scan(
 			&u.UserId,
 			&u.UserName,
+			&u.Nickname,
 		)
 		if err != nil {
 			break
