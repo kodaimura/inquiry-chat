@@ -14,7 +14,7 @@ export const SignupForm = () => {
 		<span className="has-text-danger">{errorMsg}</span>
 		<div className="field">
 			<p className="control has-icons-left">
-			<input className="input" type="text" placeholder="Name" 
+			<input className="input" type="text" placeholder="ログインID" 
 			onChange={(e) => setUsername(e.target.value)} required/>
 			<span className="icon is-small is-left">
 			<i className="fas fa-user"></i>
@@ -23,7 +23,7 @@ export const SignupForm = () => {
 		</div>
 		<div className="field">
 			<p className="control has-icons-left">
-			<input className="input" type="password" placeholder="Password" 
+			<input className="input" type="password" placeholder="パスワード" 
 			onChange={(e) => setPassword(e.target.value)} required/>
 			<span className="icon is-small is-left">
 			<i className="fas fa-lock"></i>
@@ -32,7 +32,7 @@ export const SignupForm = () => {
 		</div>
 		<div className="field">
 			<p className="control has-icons-left">
-			<input className="input" type="password" placeholder="Password Confirm" 
+			<input className="input" type="password" placeholder="パスワード(確認用)" 
 			onChange={(e) => setPasswordConfirm(e.target.value)}/>
 			<span className="icon is-small is-left">
 			<i className="fas fa-lock"></i>
@@ -43,7 +43,7 @@ export const SignupForm = () => {
 			<p className="control">
 			<button className="button is-info"
 			onClick={(e) => signup(username, password, passwordConfirm, setErrorMsg)}>
-			Signup
+			サインアップ
 			</button>
 			</p>
 		</div>

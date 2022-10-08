@@ -14,13 +14,13 @@ export const LoginPage = () => {
 				<button 
 					className="button is-ghost"
 					onClick={() => navigate('/signup')}
-				>SIGNUP</button>}
+				>サインアップ</button>}
 		/>
 		
 		<div className="columns is-centered mt-6">
 		<div className="column is-half box px-5 pb-5">
 		<div className="mb-3 mt-1">
-		Sign in to your account.
+		ログイン
 		</div>
 		<LoginForm/>
 		</div>

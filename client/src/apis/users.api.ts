@@ -9,13 +9,20 @@ export const signup = (
 ) => {
 	if (username === "") {
 		if (setErrorMsg) {
-			setErrorMsg("Name is Required field.");
+			setErrorMsg("ユーザIDは必須項目です。");
+		}
+		return
+	}
+
+	if (password === "") {
+		if (setErrorMsg) {
+			setErrorMsg("パスワードは必須項目です。");
 		}
 		return
 	}
 
 	if (password !== passwordConfirm && setErrorMsg) {
-		setErrorMsg("Confirmation passwords do not match.");
+		setErrorMsg("パスワードが一致していません。");
 	} else {
 		fetch(`${apiurl}/signup`, {
 			method: "POST",
@@ -26,8 +33,8 @@ export const signup = (
 			if (!response.ok) {
 				if (setErrorMsg) {
 					setErrorMsg((response.status === 409)? 
-						"This Username is already in use." 
-						: "Signup failed.");
+						"ユーザIDが既に利用されています。" 
+						: "サインアップに失敗しました。");
 				}
 				throw new Error(response.statusText);
 			}
@@ -51,8 +58,8 @@ export const login =　(
 		if (!response.ok) {
 			if (setErrorMsg) {
 				setErrorMsg((response.status === 401)? 
-					"Unknown name or bad password." 
-					: "Login failed.");
+					"ユーザIDまたはパスワードが異なります。" 
+					: "ログインに失敗しました。");
 			}
 			throw new Error(response.statusText);
 		}

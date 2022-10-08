@@ -13,7 +13,7 @@ export const LoginForm = () => {
 		<span className="has-text-danger">{errorMsg}</span>
 		<div className="field">
 			<p className="control has-icons-left">
-			<input className="input" type="text" placeholder="Name" 
+			<input className="input" type="text" placeholder="ログインID" 
 			onChange={(e) => setUsername(e.target.value)}/>
 			<span className="icon is-small is-left">
 			<i className="fas fa-user"></i>
@@ -22,7 +22,7 @@ export const LoginForm = () => {
 		</div>
 		<div className="field">
 			<p className="control has-icons-left">
-			<input className="input" type="password" placeholder="Password" 
+			<input className="input" type="password" placeholder="パスワード" 
 			onChange={(e) => setPassword(e.target.value)}/>
 			<span className="icon is-small is-left">
 			<i className="fas fa-lock"></i>
@@ -33,7 +33,7 @@ export const LoginForm = () => {
 			<p className="control">
 			<button className="button is-success" 
 			onClick={(e) => login(username, password, setErrorMsg)}>
-			Login
+			ログイン
 			</button>
 			</p>
 		</div>

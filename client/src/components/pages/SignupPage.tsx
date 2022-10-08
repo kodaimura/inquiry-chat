@@ -14,13 +14,13 @@ export const SignupPage = () => {
 				<button
 					className="button is-ghost"
 					onClick={() => navigate('/')}
-				>LOGIN</button>}
+				>ログイン</button>}
 		/>
 
 		<div className="columns is-centered mt-6">
 		<div className="column is-half box px-5 pb-5">
 		<div className="mb-3 mt-1">
-		<p className="">Create a new account.</p>
+		<p className="">アカウント作成</p>
 		</div>
 		<SignupForm />
 		</div>
