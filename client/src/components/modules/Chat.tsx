@@ -91,17 +91,22 @@ export const Chat = (props: {
 				className="textarea"
 				rows={1}
 				onChange={(e) => setMsg(e.target.value)}
+				value={msg}
 			>
 			</textarea>
 			<div className="is-fullwidth has-text-right">
-			<i className="fa-solid fa-paper-plane fa-xl has-text-link" 
-				onClick={(e) => {
-					webSocketRef.current?.send(
-						JSON.stringify({"to": props.toUserId, "message":msg})
-				)}}
-				style={{bottom:0}}
-			>
-			</i>
+			{(msg == "")? "" : 
+				<i className="fa-solid fa-paper-plane fa-xl has-text-link" 
+					onClick={(e) => {
+						webSocketRef.current?.send(
+							JSON.stringify({"to": props.toUserId, "message":msg})
+						);
+						setMsg("");
+					}}
+					style={{bottom:0}}
+					>
+				</i>
+			}
 			</div>
 		</div>
 		</div>
