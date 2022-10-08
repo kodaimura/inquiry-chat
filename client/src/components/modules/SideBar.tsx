@@ -52,9 +52,8 @@ export const SideBar = (props: {
             <div className="navbar-item">
             	<ProfileModal />
             </div>
-            
             <div className="navbar-item is-size-5 has-text-weight-semibold">
-            	@ {toUserNickname}
+            {(toUserNickname == "")? "" : `@ ${toUserNickname}`}
             </div>
       		</div>
       	</nav>

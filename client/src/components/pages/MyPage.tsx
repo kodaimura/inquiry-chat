@@ -39,6 +39,11 @@ export const MyPage = () => {
 		marginTop: '52px',
 	}
 
+	const st4 = {
+		height:'100%',
+		width: '100%',
+	}
+
 	return (
 		<>
 		<div style={st1}>
@@ -47,12 +52,18 @@ export const MyPage = () => {
 		<div className="is-hidden-touch" style={st2}>
 		</div>
 		<div className="column mx-3" style={st3}>
+		{(toUserId == 0)? 
+			<iframe 
+				style={st4}
+				src="">
+			</iframe> :
 			<Chat 
 				userId={userId} 
 				userNickname={userNickname} 
 				toUserId={toUserId} 
 				socket={socket}
 			/>
+		}
 		</div>
 		</div>
 		</div>
