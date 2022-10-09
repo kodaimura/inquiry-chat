@@ -11,6 +11,8 @@ import (
 type MessageService interface {
     RegisterMessage(message string, from, to int) int
     GetTalk(userId1, userId2 int) ([]entity.Message, error)
+    ReadMessages(from, to int) int
+    GetNewMessagesCount(from, to int) (int, error)
 }
 
 
@@ -59,4 +61,32 @@ func (serv *messageService) GetTalk(userId1, userId2 int) ([]entity.Message, err
     }
 
     return messages, err
+}
+
+
+// ReadMessages() Return value
+/*----------------------------------------*/
+const READ_MESSAGES_SUCCESS_INT = 0
+const READ_MESSAGES_ERROR_INT = 1
+/*----------------------------------------*/
+func (serv *messageService) ReadMessages(from, to int) int {
+    err := serv.mRep.UpdateRead(from, to)
+
+    if err != nil {
+        logger.LogError(err.Error())
+        return READ_MESSAGES_ERROR_INT
+    }
+
+    return READ_MESSAGES_SUCCESS_INT
+}
+
+
+func (serv *messageService) GetNewMessagesCount(from, to int) (int, error) {
+    count, err := serv.mQue.SelectNewMessagesCount(from, to)
+
+    if err != nil {
+        logger.LogError(err.Error())
+    }
+
+    return count, err
 }

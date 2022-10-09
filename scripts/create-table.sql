@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS message (
 	message TEXT NOT NULL,
 	send_from INTEGER NOT NULL,
 	send_to INTEGER NOT NULL,
+	read INTEGER DEFAULT 0,
 	create_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime')),
 	update_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime'))
 );

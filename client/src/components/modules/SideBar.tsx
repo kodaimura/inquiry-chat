@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 
 import {ProfileModal} from './ProfileModal';
 import {logout, getUsers} from '../../apis/users.api';
+import {readMessages, getNewMessagesCount} from '../../apis/messages.api';
 
 
 export const SideBar = (props: {
@@ -69,17 +70,16 @@ export const SideBar = (props: {
 					index: number
 				) =>  (
 					<li>
-					<button 
-						className="button is-fullwidth 
-						is-justify-content-flex-start has-background-info"
+					<SideBarUserButton
+						nickname={user.nickname}
+						userId={user.user_id}
 						onClick={() => {
 							props.setToUserId(user.user_id);
 							setToUserNickname(user.nickname);
 							setIsActive(false);
+							readMessages(user.user_id);
 						}}
-					>
-        			<span key={index}>{user.nickname}</span>
-        			</button>
+					/>
         			</li>
      			))}
 				</ul>
@@ -91,6 +91,45 @@ export const SideBar = (props: {
 				</div>
             </div>
         </div>
+        </>
+	);
+}
+
+
+const SideBarUserButton = (props: {
+	nickname: string,
+	userId: number,
+    onClick: (event: React.MouseEvent<HTMLButtonElement>) => void
+}) => {
+	const [count, setCount] = useState(0);
+
+	useEffect(() => {
+		getNewMessagesCount(props.userId)
+		.then(data => {
+			if (data && data.count) setCount(data.count);
+		});
+
+	}, [props.userId]);
+
+	return (
+		<>
+			<button 
+				className="button is-fullwidth is-inline-block
+				is-justify-content-flex-start has-background-info"
+				onClick={(event) => { 
+					props.onClick(event);
+					setCount(0);
+				}}
+			>
+        		<span className="is-pulled-left">
+        			{props.nickname}
+        		</span>
+        		{(count == 0)? "" : 
+        		<span className="is-pulled-right">
+        		{count}
+        		</span>
+        		}
+        	</button>
         </>
 	);
 }

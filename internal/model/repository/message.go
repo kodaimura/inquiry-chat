@@ -14,6 +14,7 @@ type MessageRepository interface {
 	Select(id int) (entity.Message, error)
 	Update(id int, m *entity.Message) error
 	Delete(id int) error
+	UpdateRead(sendFrom, sendTo int) error
 }
 
 
@@ -75,14 +76,10 @@ func (rep *messageRepository) Update(id int, m *entity.Message) error {
 	_, err := rep.db.Exec(
 		`UPDATE message
 		 SET
-			message = ?,
-			send_from = ?,
-			send_to = ?
+			message = ?
 		 FROM message
 		 WHERE message_id = ?`,
 		m.Message,
-		m.SendFrom,
-		m.SendTo,
 		id,
 	)
 
@@ -95,6 +92,21 @@ func (rep *messageRepository) Delete(id int) error {
 		`DELETE FROM message
 		 WHERE message_id = ?`,
 		id,
+	)
+
+	return err
+}
+
+
+func (rep *messageRepository) UpdateRead(sendFrom, sendTo int) error {
+	_, err := rep.db.Exec(
+		`UPDATE message
+		 SET read = 1
+		 WHERE send_from = ?
+		   AND send_to = ?
+		   AND read = 0`,
+		sendFrom,
+		sendTo,
 	)
 
 	return err

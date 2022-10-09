@@ -28,3 +28,21 @@ func (ctr *messageApiController) getMessages(c *gin.Context) {
 
     c.JSON(200, messages)
 }
+
+
+//PUT /api/messages/@:user_id/read
+func (ctr *messageApiController) readMessages(c *gin.Context) {
+    userId, _ := strconv.Atoi(c.Param("user_id"))
+    ctr.mServ.ReadMessages(userId, jwt.GetUserId(c))
+
+    c.JSON(200, gin.H{})
+}
+
+
+//GET /api/messages/@:user_id/news/count
+func (ctr *messageApiController) getNewMessagesCount(c *gin.Context) {
+    userId, _ := strconv.Atoi(c.Param("user_id"))
+    count, _ := ctr.mServ.GetNewMessagesCount(userId, jwt.GetUserId(c))
+
+    c.JSON(200, gin.H{"count" : count})
+}

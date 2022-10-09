@@ -45,6 +45,8 @@ func SetRouter(r *gin.Engine) {
 			mac := newMessageApiController()
 
         	a.GET("/messages/@:user_id", mac.getMessages)
+        	a.PUT("/messages/@:user_id/read", mac.readMessages)
+        	a.GET("/messages/@:user_id/news/count", mac.getNewMessagesCount)
 
         	wsc := newWsController()
 

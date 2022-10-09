@@ -10,6 +10,7 @@ import (
 
 type MessageQuery interface {
 	SelectMessages(userId1, userId2 int) ([]entity.Message, error)
+	SelectNewMessagesCount(sendFrom, sendTo int) (int, error)
 }
 
 
@@ -65,4 +66,24 @@ func (que *messageQuery) SelectMessages(userId1, userId2 int) ([]entity.Message,
 	}
 
 	return ret, err
+}
+
+
+func (que *messageQuery) SelectNewMessagesCount(sendFrom, sendTo int) (int, error) {
+	var count int
+
+	err := que.db.QueryRow(
+		`SELECT
+			count(1)
+		 FROM message
+		 WHERE send_from = ?
+		   AND send_to = ?
+		   AND read = 0`,
+		sendFrom,
+		sendTo,
+	).Scan(
+		&count,
+	)
+
+	return count, err
 }
