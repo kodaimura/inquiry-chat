@@ -1,4 +1,4 @@
-import {useState,useEffect} from 'react';
+import {useState,useEffect, useRef} from 'react';
 
 import {Header} from '../layouts';
 import {Chat, SideBar} from '../modules';
@@ -12,6 +12,7 @@ export const MyPage = () => {
 	const [toUserId, setToUserId] = useState(0);
 	const [userId, setUserId] = useState(0);
 	const [userNickname, setUserNickname] = useState("");
+	const webSocketRef = useRef<WebSocket>();
 
 
 	useEffect(() => {
@@ -22,6 +23,11 @@ export const MyPage = () => {
 		});
 
 	}, []);
+
+	useEffect(() => {
+		webSocketRef.current = socket;
+	});
+
 
 	const st1 = {
 		position: 'relative' as 'relative',
@@ -48,7 +54,11 @@ export const MyPage = () => {
 		<>
 		<div style={st1}>
 		<div className="columns is-gapless" style={{height:'100%'}}>
-		<SideBar setToUserId={setToUserId}/>
+		<SideBar 
+			userId={toUserId}
+			setToUserId={setToUserId}
+			webSocketRef={webSocketRef}
+		/>
 		<div className="is-hidden-touch" style={st2}>
 		</div>
 		<div className="column mx-3" style={st3}>
@@ -61,7 +71,7 @@ export const MyPage = () => {
 				userId={userId} 
 				userNickname={userNickname} 
 				toUserId={toUserId} 
-				socket={socket}
+				webSocketRef={webSocketRef}
 			/>
 		}
 		</div>

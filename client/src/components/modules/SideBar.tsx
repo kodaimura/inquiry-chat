@@ -6,11 +6,15 @@ import {readMessages, getNewMessagesCount} from '../../apis/messages.api';
 
 
 export const SideBar = (props: {
-    setToUserId: (id: number) => void 
+	userId: number,
+    setToUserId: (id: number) => void,
+    webSocketRef: any,
 }) => {
 	const [users, setUsers] = useState([{user_id:0, nickname:""}]);
 	const [toUserNickname, setToUserNickname] = useState("");
+	const [toUserId, setToUserId] = useState(0);
 	const [isActive, setIsActive] = useState(false);
+
 	
 	const st1 = {
 		width: '280px',
@@ -71,14 +75,17 @@ export const SideBar = (props: {
 				) =>  (
 					<li>
 					<SideBarUserButton
+						selectedUserId={toUserId}
 						nickname={user.nickname}
 						userId={user.user_id}
 						onClick={() => {
 							props.setToUserId(user.user_id);
+							setToUserId(user.user_id);
 							setToUserNickname(user.nickname);
 							setIsActive(false);
 							readMessages(user.user_id);
 						}}
+						webSocketRef={props.webSocketRef}
 					/>
         			</li>
      			))}
@@ -97,11 +104,14 @@ export const SideBar = (props: {
 
 
 const SideBarUserButton = (props: {
+	selectedUserId: number,
 	nickname: string,
 	userId: number,
-    onClick: (event: React.MouseEvent<HTMLButtonElement>) => void
+    onClick: (event: React.MouseEvent<HTMLButtonElement>) => void,
+    webSocketRef: any,
 }) => {
 	const [count, setCount] = useState(0);
+
 
 	useEffect(() => {
 		getNewMessagesCount(props.userId)
@@ -110,6 +120,20 @@ const SideBarUserButton = (props: {
 		});
 
 	}, [props.userId]);
+
+	useEffect(() => {
+		props.webSocketRef?.current?.addEventListener('message', (event: any) => {
+			if (JSON.parse(event.data).send_from === props.userId 
+				&& props.userId !== props.selectedUserId) {
+				getNewMessagesCount(props.userId)
+				.then(data => {
+					if (data && data.count) setCount(data.count);
+				});
+			}
+
+		});
+	}, [props.webSocketRef]);
+
 
 	return (
 		<>

@@ -98,6 +98,7 @@ func (ctr *wsController) wsListener(soc Socket) {
         var m entity.Message
         m.Message = msg.Message
         m.SendFrom = soc.UserId
+        m.SendTo = msg.To
         m.CreateAt = time.Now().Format("2006-01-02 15:04:05")
         
         for _, s := range sockets {
