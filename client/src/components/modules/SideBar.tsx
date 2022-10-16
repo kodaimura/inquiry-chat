@@ -58,7 +58,7 @@ export const SideBar = (props: {
             	<ProfileModal />
             </div>
             <div className="navbar-item is-size-5 has-text-weight-semibold">
-            {(toUserNickname == "")? "" : `@ ${toUserNickname}`}
+            {(toUserNickname === "")? "" : `@ ${toUserNickname}`}
             </div>
       		</div>
       	</nav>
@@ -132,7 +132,7 @@ const SideBarUserButton = (props: {
 			}
 
 		});
-	}, [props.webSocketRef]);
+	}, [props.webSocketRef, props.selectedUserId, props.userId]);
 
 
 	const st1 = {
@@ -159,7 +159,7 @@ const SideBarUserButton = (props: {
         		<span className="is-pulled-left">
         			{props.nickname}
         		</span>
-        		{(count == 0)? "" : 
+        		{(count === 0)? "" : 
         		<div style={st1} className="is-pulled-right">
         			<span>
         			{count}

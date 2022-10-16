@@ -1,9 +1,7 @@
 import {useState,useEffect, useRef} from 'react';
 
-import {Header} from '../layouts';
 import {Chat, SideBar} from '../modules';
 import {getProfile} from '../../apis/users.api';
-import {getMessages} from '../../apis/messages.api';
 
 
 const socket = new WebSocket(`ws://localhost:3000/api/messages/ws`)
@@ -62,8 +60,9 @@ export const MyPage = () => {
 		<div className="is-hidden-touch" style={st2}>
 		</div>
 		<div className="column mx-3" style={st3}>
-		{(toUserId == 0)? 
+		{(toUserId === 0)? 
 			<iframe 
+				title="news"
 				style={st4}
 				src="">
 			</iframe> :

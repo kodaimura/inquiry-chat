@@ -1,8 +1,8 @@
 import {useState,useEffect} from 'react';
 
 import {Messages} from './Messages';
-import {getProfile, logout, getUser} from '../../apis/users.api';
-import {getMessages, readMessages} from '../../apis/messages.api';
+import {getUser} from '../../apis/users.api';
+import {getMessages} from '../../apis/messages.api';
 
 
 const initMsgs = [{
@@ -59,7 +59,7 @@ export const Chat = (props: {
 			}
 		});
 
-	}, [newMessages, props.webSocketRef])
+	}, [newMessages, props.webSocketRef, props.toUserId, props.userId])
 
 
 	const st1 = {
@@ -98,7 +98,7 @@ export const Chat = (props: {
 			>
 			</textarea>
 			<div className="is-fullwidth has-text-right">
-			{(msg == "")? "" : 
+			{(msg === "")? "" : 
 				<i className="fa-solid fa-paper-plane fa-xl has-text-link" 
 					onClick={(e) => {
 						props.webSocketRef?.current?.send(

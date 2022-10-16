@@ -1,6 +1,5 @@
 import {useState,useEffect} from 'react';
 
-import {Header} from '../layouts';
 import {getProfile, updateProfile} from '../../apis/users.api';
 
 

@@ -38,5 +38,3 @@ const AppRoutes = () => {
 }
 
 export default AppRoutes
-
-//<Route path="/login" element={<LoginPage />}/>
