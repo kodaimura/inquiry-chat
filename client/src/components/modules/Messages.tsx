@@ -17,7 +17,7 @@ export const Messages = (props: {
 			},
 			index: number
 		) =>  (
-			<li>
+			<li key={index}>
 			{(m.send_from === props.userId)?
 				<Message 
 					userNickname={props.userNickname}

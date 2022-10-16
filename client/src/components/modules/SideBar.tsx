@@ -73,7 +73,7 @@ export const SideBar = (props: {
 					},
 					index: number
 				) =>  (
-					<li>
+					<li key={index}>
 					<SideBarUserButton
 						selectedUserId={toUserId}
 						nickname={user.nickname}
