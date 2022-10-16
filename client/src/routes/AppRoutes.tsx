@@ -22,18 +22,18 @@ const AppRoutes = () => {
   const [authz, setAuthz] = useState(false);
 
   useEffect(() => {
-    authorized()
-    .then(bool => setAuthz(bool));
+	authorized()
+	.then(bool => setAuthz(bool));
   }, []);
 
   return (
-    <BrowserRouter>
-        <Routes>
-            <Route path="/" element={authz? <MyPage /> : <LoginPage />}/>
-            <Route path="/signup" element={<SignupPage />}/>
-            <Route path="*" element={<NotFoundPage />}/>
-      </Routes>
-    </BrowserRouter>
+	<BrowserRouter>
+		<Routes>
+			<Route path="/" element={authz? <MyPage /> : <LoginPage />}/>
+			<Route path="/signup" element={<SignupPage />}/>
+			<Route path="*" element={<NotFoundPage />}/>
+	  </Routes>
+	</BrowserRouter>
   )
 }
 

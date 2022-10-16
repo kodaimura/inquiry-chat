@@ -7,20 +7,29 @@ import {readMessages, getNewMessagesCount} from '../../apis/messages.api';
 
 export const SideBar = (props: {
 	userId: number,
-    setToUserId: (id: number) => void,
-    webSocketRef: any,
+	setToUserId: (id: number) => void,
+	webSocketRef: any,
 }) => {
 	const [users, setUsers] = useState([{user_id:0, nickname:""}]);
 	const [toUserNickname, setToUserNickname] = useState("");
 	const [toUserId, setToUserId] = useState(0);
 	const [isActive, setIsActive] = useState(false);
 
-	
+
+	useEffect(() => {
+		getUsers()
+		.then(data => {
+			if (data && data.users) setUsers(data.users);
+		});
+
+	}, []);
+
+
 	const st1 = {
 		width: '280px',
 		height: '100%',
-        position: 'absolute' as 'absolute',
-        zIndex: 1,
+		position: 'absolute' as 'absolute',
+		zIndex: 1,
 	}
 
 	const st2 = {
@@ -33,38 +42,30 @@ export const SideBar = (props: {
 		overflowY: 'scroll' as 'scroll',
 	}
 
-	useEffect(() => {
-		getUsers()
-		.then(data => {
-			if (data && data.users) setUsers(data.users);
-		});
-
-	}, []);
-
 	return (
 		<>
 		<nav className="navbar has-background-info is-fixed-top">
 			<div className="navbar-brand">
-            <div
-                onClick={() => {setIsActive(!isActive);}} 
-                className={`ml-0 burger navbar-burger ${isActive ? "is-active" : ""}`}
-            >
-        	<span aria-hidden="true"></span>
-        	<span aria-hidden="true"></span>
-        	<span aria-hidden="true"></span>
-            </div>
+			<div
+				onClick={() => {setIsActive(!isActive);}} 
+				className={`ml-0 burger navbar-burger ${isActive ? "is-active" : ""}`}
+			>
+			<span aria-hidden="true"></span>
+			<span aria-hidden="true"></span>
+			<span aria-hidden="true"></span>
+			</div>
 
-            <div className="navbar-item">
-            	<ProfileModal />
-            </div>
-            <div className="navbar-item is-size-5 has-text-weight-semibold">
-            {(toUserNickname === "")? "" : `@ ${toUserNickname}`}
-            </div>
-      		</div>
-      	</nav>
-      	<div className={`navbar-menu has-background-info ${isActive ? "is-active" : ""}`} style={st1}>
-            <div style={st1}>
-            <div className="is-hidden-mobile" style={st2}></div>
+			<div className="navbar-item">
+				<ProfileModal />
+			</div>
+			<div className="navbar-item is-size-5 has-text-weight-semibold">
+			{(toUserNickname === "")? "" : `@ ${toUserNickname}`}
+			</div>
+			  </div>
+		  </nav>
+		  <div className={`navbar-menu has-background-info ${isActive ? "is-active" : ""}`} style={st1}>
+			<div style={st1}>
+			<div className="is-hidden-mobile" style={st2}></div>
 				<ul className="menu-list px-4" style={st3}>
 				{users.map((
 					user:{
@@ -87,8 +88,8 @@ export const SideBar = (props: {
 						}}
 						webSocketRef={props.webSocketRef}
 					/>
-        			</li>
-     			))}
+					</li>
+				 ))}
 				</ul>
 				<div className="px-4">
 				<button
@@ -96,9 +97,9 @@ export const SideBar = (props: {
 					onClick={() => logout()}
 				>ログアウト</button>
 				</div>
-            </div>
-        </div>
-        </>
+			</div>
+		</div>
+		</>
 	);
 }
 
@@ -107,8 +108,8 @@ const SideBarUserButton = (props: {
 	selectedUserId: number,
 	nickname: string,
 	userId: number,
-    onClick: (event: React.MouseEvent<HTMLButtonElement>) => void,
-    webSocketRef: any,
+	onClick: (event: React.MouseEvent<HTMLButtonElement>) => void,
+	webSocketRef: any,
 }) => {
 	const [count, setCount] = useState(0);
 
@@ -120,6 +121,7 @@ const SideBarUserButton = (props: {
 		});
 
 	}, [props.userId]);
+
 
 	useEffect(() => {
 		props.webSocketRef?.current?.addEventListener('message', (event: any) => {
@@ -140,9 +142,9 @@ const SideBarUserButton = (props: {
 		height: '22px',
 		width: '28px',
 		borderRadius: '40%',
- 		textAlign: 'center' as 'center',
- 		fontSize: '0.8rem',
- 		opacity: 0.7,
+		 textAlign: 'center' as 'center',
+		 fontSize: '0.8rem',
+		 opacity: 0.7,
 	}
 
 
@@ -156,17 +158,17 @@ const SideBarUserButton = (props: {
 					setCount(0);
 				}}
 			>
-        		<span className="is-pulled-left">
-        			{props.nickname}
-        		</span>
-        		{(count === 0)? "" : 
-        		<div style={st1} className="is-pulled-right">
-        			<span>
-        			{count}
-        			</span>
-        		</div>
-        		}
-        	</button>
-        </>
+				<span className="is-pulled-left">
+					{props.nickname}
+				</span>
+				{(count === 0)? "" : 
+				<div style={st1} className="is-pulled-right">
+					<span>
+					{count}
+					</span>
+				</div>
+				}
+			</button>
+		</>
 	);
 }

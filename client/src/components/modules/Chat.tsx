@@ -3,9 +3,10 @@ import {useState,useEffect} from 'react';
 import {Messages} from './Messages';
 import {getUser} from '../../apis/users.api';
 import {getMessages} from '../../apis/messages.api';
+import {MessageType} from '../../types/types';
 
 
-const initMsgs = [{
+const initMsgs: MessageType[] = [{
 	message:"", send_from:0, send_to:0, create_at:"",
 }];
 
@@ -88,7 +89,7 @@ export const Chat = (props: {
 			toUserNickname={toUserNickname}
 			messages={newMessages}
 		/>
-     	</div>
+		 </div>
 		<div className="box">
 			<textarea 
 				className="textarea"
@@ -113,5 +114,5 @@ export const Chat = (props: {
 			</div>
 		</div>
 		</div>
-		)
+	)
 }

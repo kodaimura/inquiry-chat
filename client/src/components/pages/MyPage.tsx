@@ -22,6 +22,7 @@ export const MyPage = () => {
 
 	}, []);
 
+
 	useEffect(() => {
 		webSocketRef.current = socket;
 	});
@@ -29,8 +30,8 @@ export const MyPage = () => {
 
 	const st1 = {
 		position: 'relative' as 'relative',
-        zIndex: 0,
-        height: '100%',
+		zIndex: 0,
+		height: '100%',
 	}
 
 	const st2 = {
@@ -77,5 +78,5 @@ export const MyPage = () => {
 		</div>
 		</div>
 		</>
-		)
+	);
 }

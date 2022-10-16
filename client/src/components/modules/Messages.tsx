@@ -1,20 +1,19 @@
+import {MessageType} from '../../types/types';
+
+
 export const Messages = (props: {
 	userId: number,
 	userNickname: string,
 	toUserId: number,
 	toUserNickname: string,
-	messages: {message:string, send_from:number, create_at:string}[],
+	messages: MessageType[],
 }) => {
 
 	return (
 		<>
 		<ul>
 		{props.messages.map((
-			m:{
-				message: string,
-				send_from: number,
-				create_at: string,
-			},
+			m: MessageType,
 			index: number
 		) =>  (
 			<li key={index}>
@@ -30,11 +29,11 @@ export const Messages = (props: {
 					create_at={m.create_at}
 				/> : ""
 			}
-        	</li>
-     	))}
-     	</ul>
+			</li>
+		 ))}
+		 </ul>
 		</>
-		)
+	);
 }
 
 
@@ -48,7 +47,7 @@ const Message = (props: {
 		<div className="box">
 			<span className="has-text-weight-bold">{props.userNickname} </span>
 			<span className="is-size-7">{props.create_at}</span><br/>
-        	<span style={{'whiteSpace': 'pre-wrap'}}> {props.message}</span>
-     	</div>
-		)
+			<span style={{'whiteSpace': 'pre-wrap'}}> {props.message}</span>
+		 </div>
+	);
 }

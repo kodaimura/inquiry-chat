@@ -37,7 +37,7 @@ func (que *messageQuery) SelectMessages(userId1, userId2 int) ([]entity.Message,
 			create_at
 		 FROM message
 		 WHERE (send_to = ? AND send_from = ?)
-		    OR (send_from = ? AND send_to = ?)
+			OR (send_from = ? AND send_to = ?)
 		 ORDER BY create_at`,
 		userId1,
 		userId2,

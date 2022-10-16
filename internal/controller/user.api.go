@@ -184,7 +184,7 @@ func (ctr *userApiController) getUsers(c *gin.Context) {
 		users, _ = ctr.uServ.GetAdmins();
 	}
 
-    c.JSON(200, gin.H{
+	c.JSON(200, gin.H{
 		"users": users,
 	})
 }
