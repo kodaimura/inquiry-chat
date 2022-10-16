@@ -135,6 +135,17 @@ const SideBarUserButton = (props: {
 	}, [props.webSocketRef]);
 
 
+	const st1 = {
+		backgroundColor: '#ddd',
+		height: '22px',
+		width: '28px',
+		borderRadius: '40%',
+ 		textAlign: 'center' as 'center',
+ 		fontSize: '0.8rem',
+ 		opacity: 0.7,
+	}
+
+
 	return (
 		<>
 			<button 
@@ -149,9 +160,11 @@ const SideBarUserButton = (props: {
         			{props.nickname}
         		</span>
         		{(count == 0)? "" : 
-        		<span className="is-pulled-right">
-        		{count}
-        		</span>
+        		<div style={st1} className="is-pulled-right">
+        			<span>
+        			{count}
+        			</span>
+        		</div>
         		}
         	</button>
         </>
