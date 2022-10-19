@@ -1,2 +1,2 @@
-# GOAT
-## Go Web Application Template
+# INQUIRY CHAT
+## 一対多チャットアプリ
