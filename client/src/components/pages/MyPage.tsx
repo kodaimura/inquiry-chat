@@ -2,9 +2,10 @@ import {useState,useEffect, useRef} from 'react';
 
 import {Chat, SideBar} from '../modules';
 import {getProfile} from '../../apis/users.api';
+import {wsurl} from '../../constants';
 
 
-const socket = new WebSocket(`ws://localhost:3000/api/messages/ws`)
+const socket = new WebSocket(wsurl)
 
 export const MyPage = () => {
 	const [toUserId, setToUserId] = useState(0);
