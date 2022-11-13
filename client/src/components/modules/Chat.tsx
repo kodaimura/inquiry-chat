@@ -2,7 +2,7 @@ import {useState,useEffect} from 'react';
 
 import {Messages} from './Messages';
 import {getUser} from '../../apis/users.api';
-import {getMessages} from '../../apis/messages.api';
+import {getMessages, readMessages} from '../../apis/messages.api';
 import {MessageType} from '../../types/types';
 
 
@@ -21,6 +21,7 @@ export const Chat = (props: {
 	const [messages, setMessages] = useState(initMsgs);
 	const [newMessages, setNewMessages] = useState(initMsgs);
 	const [msg, setMsg] = useState("");
+	const [msgRows, setMsgRows] = useState(1);
 
 
 	useEffect(() => {
@@ -63,6 +64,11 @@ export const Chat = (props: {
 	}, [newMessages, props.webSocketRef, props.toUserId, props.userId])
 
 
+	useEffect(() => {
+		setMsgRows((msg.includes("\n"))? 2 : 1)
+	}, [msg])
+
+
 	const st1 = {
 		height: 'calc(100% - 160px)',
 	}
@@ -91,26 +97,31 @@ export const Chat = (props: {
 		/>
 		 </div>
 		<div className="box">
+			<div className="columns is-mobile">
+			<div className="column is-11 pr-0">
 			<textarea 
 				className="textarea"
-				rows={1}
+				rows={msgRows}
 				onChange={(e) => setMsg(e.target.value)}
 				value={msg}
 			>
 			</textarea>
-			<div className="is-fullwidth has-text-right">
+			</div>
+			<div className="column mt-auto mb-auto pl-1">
 			{(msg === "")? "" : 
 				<i className="fa-solid fa-paper-plane fa-xl has-text-link" 
 					onClick={(e) => {
 						props.webSocketRef?.current?.send(
 							JSON.stringify({"to": props.toUserId, "message":msg})
 						);
+						readMessages(props.toUserId);
 						setMsg("");
 					}}
 					style={{bottom:0}}
 					>
 				</i>
 			}
+			</div>
 			</div>
 		</div>
 		</div>

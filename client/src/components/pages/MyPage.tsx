@@ -45,10 +45,6 @@ export const MyPage = () => {
 		marginTop: '52px',
 	}
 
-	const st4 = {
-		height:'100%',
-		width: '100%',
-	}
 
 	return (
 		<>
@@ -63,11 +59,20 @@ export const MyPage = () => {
 		</div>
 		<div className="column mx-3" style={st3}>
 		{(toUserId === 0)? 
-			<iframe 
-				title="news"
-				style={st4}
-				src="">
-			</iframe> :
+			<ul>
+			<li>
+		 	<div className="box">
+				<span className="has-text-weight-bold">アナウンス</span><br/>
+				<span style={{'whiteSpace': 'pre-wrap'}}>歯車マークから表示名を変更することができます。</span>
+		 	</div>
+		 	</li>
+			<li>
+			<div className="box">
+				<span className="has-text-weight-bold">アナウンス</span><br/>
+				<span style={{'whiteSpace': 'pre-wrap'}}>サイドバーからチャット相手を選択することができます。</span>
+		 	</div>
+		 	</li>
+			</ul> :
 			<Chat 
 				userId={userId} 
 				userNickname={userNickname} 

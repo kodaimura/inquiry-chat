@@ -1,3 +1,2 @@
-//export const wsurl = "ws://localhost:3000/api/messages/ws"
-export const wsurl = "ws://murakamikoudai.com/api/messages/ws"
+export const wsurl = `${(window.location.protocol === "http")? "ws"  : "wss"}://${window.location.host}/api/messages/ws`
 
